@@ -8,7 +8,7 @@ function Header() {
     const dispatch = useDispatch()
 
     return (
-        <header className={`min-h-[6vh] flex items-center justify-center transition-colors duration-200 ${currentTheme === 'dark' ? 'bg-[#212121] text-white' : 'bg-white text-black'}`}>
+        <header className={`min-h-[6vh] flex items-center justify-center transition-colors duration-200 ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>
             <div className="flex w-full max-w-[1048px] justify-between items-center mx-2.5 my-2.5">
                 {/* Logo */}
                 <div className="flex items-center gap-2 px-6 text-2xl font-medium font-['Bai_Jamjuree']">

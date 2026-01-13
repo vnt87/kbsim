@@ -185,7 +185,7 @@ function KeySimulator() {
 
     return (
         <div
-            className={`flex-1 flex flex-col items-center justify-start py-4 transition-colors duration-200 ${bgClass} outline-none`}
+            className={`flex-1 flex flex-col items-center justify-start py-4 transition-colors duration-200 ${textClass} outline-none`}
             onKeyDown={handleKeyDown}
             onKeyUp={handleKeyUp}
             ref={keycontainer}
