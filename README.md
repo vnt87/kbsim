@@ -35,40 +35,45 @@ Switch and layout requests are open at the moment, feel free to open an issue if
 # Developers
 
 ## Setup
-To run this application locally, use:
+The project has been migrated to a modern Vite stack located in the `vite-app/` directory.
+
+To run the application locally:
 
 ```bash
+cd vite-app
 npm install
-npm start
+npm run dev
 ```
 
-## Project structure
-    .
-    ├── src                                           # Source files
-    │   ├── assets                                    # audio and image assets
-    |   |   ├── audio  
-    |   |   └── images
-    │   ├── features                                  # components and modules
-    │   |   ├── Store                                 # Redux store
-    |   |   |   └── store.js
-    |   |   └── sampleComponent                       # component structure
-    |   |       ├── SampleComponent.js
-    |   |       ├── SampleComponentSlice.js
-    |   |       └── SampleComponent.module.css
-    │   ├── public                                    # robots.txt
-    |   |   └── robots.txt
-    |   ├── App.test.js                               # starter React test file
-    |   ├── index.css                                 # index styling
-    |   ├── index.html                                # meta tags
-    |   ├── index.js                                  # React entry point
-    |   └── serviceWorker.js                          # basic offline usage serviceWorker
-    ├── .babelrc                                      # babel transpiler config
-    ├── LICENSE.md                                    # MIT license
-    ├── README.md                                     # you're reading this!
-    ├── package.lock.json                             # npm dependency lockfile
-    ├── package.json                                  # dependency file
-    ├── webpack.config.json                           # webpack config file
-    └── yarn.lock                                     # yarn dependency lockfile
+## Tech Stack
+- **Framework**: React 18
+- **State Management**: Redux Toolkit
+- **Bundler**: Vite
+- **Styling**: TailwindCSS v4 + Catalyst UI + Hero Icons
+- **Audio**: Howler.js
+
+## Project structure (New Stack)
+    vite-app/
+    ├── src
+    │   ├── assets
+    │   │   ├── images                # SVG and PNG assets
+    │   │   └── sounds                # Mechanical switch audio files
+    │   ├── components
+    │   │   ├── ui                    # Catalyst UI components
+    │   │   ├── Header.jsx
+    │   │   └── Footer.jsx
+    │   ├── features
+    │   │   ├── keySimulator          # Main keyboard logic
+    │   │   ├── typingTest            # Typing speed test
+    │   │   ├── store                 # Redux store config
+    │   │   └── themeProvider         # Theme state
+    │   ├── lib                       # Shared logic (audio, layouts)
+    │   ├── App.jsx                   # Main layout
+    │   ├── main.jsx                  # Application entry
+    │   └── index.css                 # Tailwind config & global styles
+    ├── index.html                    # Entry HTML
+    ├── package.json
+    └── vite.config.js
 
 ## Contributing
 Pull requests are welcome, but please do create an issue to discuss any major changes.
