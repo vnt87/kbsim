@@ -294,13 +294,39 @@ function KeySimulator() {
                     />
 
                     {/* Case Color Column */}
-                    <ToggleGroup
-                        label="Case Color"
-                        options={keyboardColors}
-                        value={caseIndex}
-                        onChange={handleCaseChange}
-                        currentTheme={currentTheme}
-                    />
+                    <div className="flex flex-col gap-3">
+                        <span className={`text-sm font-medium ${currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                            Case Color
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                            {keyboardColors.map((color, index) => {
+                                const isActive = caseIndex === index;
+                                // Simplified contrast check: "black" and "gray" (if dark enough) might need white text
+                                const isDark = color.color === 'black';
+
+                                return (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleCaseChange(index)}
+                                        className={`
+                                            px-3 py-1.5 text-xs font-bold uppercase tracking-wide rounded-md transition-all shadow-sm
+                                            border ${currentTheme === 'dark' ? 'border-white/10' : 'border-black/10'}
+                                            ${isActive
+                                                ? (currentTheme === 'dark' ? 'ring-2 ring-white ring-offset-2 ring-offset-[#212121]' : 'ring-2 ring-black ring-offset-2 ring-offset-white')
+                                                : 'hover:scale-105 active:scale-95'}
+                                        `}
+                                        style={{
+                                            background: color.background,
+                                            color: isDark ? 'white' : 'black',
+                                            textShadow: !isDark ? '0 0 2px rgba(255,255,255,0.5)' : 'none'
+                                        }}
+                                    >
+                                        {color.caption}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </div>
 
                 </div>
                 <ToastContainer />
