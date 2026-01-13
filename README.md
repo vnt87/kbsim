@@ -1,4 +1,4 @@
-# Mechanical Keyboard Simulator - [kbs.im](https://kbs.im)
+# Mechanical Keyboard Simulator - [kbs.im](https://kbsim.pages.dev)
 ![kbs.im picture](https://github.com/tplai/kbsim/blob/master/src/assets/images/demo.PNG)
 
 Mechanical Keyboard Simulator is website that simulates typing on a variety of custom keyswitches and offers a simple typing test. Currently, it supports 10+ switches, keyboard layouts, and colors for an customizable, satisfying typing experience.
@@ -74,6 +74,24 @@ npm run dev
     ├── index.html                    # Entry HTML
     ├── package.json
     └── vite.config.js
+
+## Docker Support
+
+We provide a Docker image via GitHub Container Registry (GHCR).
+
+### Run with Docker Compose
+A sample `docker-compose.yml` is provided in the root directory. To run the application:
+
+```bash
+docker compose up -d
+```
+
+The application will be available at `http://localhost:7337`.
+
+### CI/CD
+The project uses GitHub Actions to automatically:
+- Build and push the Docker image to `ghcr.io/vnt87/kbsim` on every push to main/master.
+- Bump the patch version in `vite-app/package.json`.
 
 ## Contributing
 Pull requests are welcome, but please do create an issue to discuss any major changes.

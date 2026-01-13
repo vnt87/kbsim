@@ -5,7 +5,9 @@ function Footer() {
 
     return (
         <footer className={`min-h-[3vh] pb-2 flex items-center justify-center font-['Bai_Jamjuree'] transition-colors duration-200 ${currentTheme === 'dark' ? 'bg-[#212121] text-white' : 'bg-white text-black'}`}>
-            {/* Links can be added here when needed */}
+            <a href="https://github.com/vnt87/kbsim" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                GitHub
+            </a>
         </footer>
     )
 }

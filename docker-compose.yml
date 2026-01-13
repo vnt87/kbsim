@@ -1,0 +1,7 @@
+services:
+  app:
+    image: ghcr.io/vnt87/kbsim:latest
+    container_name: kbsim
+    restart: unless-stopped
+    ports:
+      - "7337:80"
