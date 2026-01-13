@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Howl } from 'howler';
+import { SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline';
 import {
     parseKLE,
     keyDown,
@@ -38,11 +39,10 @@ function KeySimulator() {
     const dispatch = useDispatch();
 
     const keycontainer = useRef();
-    const switchselect = useRef();
-    const layoutselect = useRef();
-    const caseselect = useRef();
     const [muted, setMute] = useState(false);
     const [switchValue, setSwitchValue] = useState("0");
+    const [layoutIndex, setLayoutIndex] = useState(0);
+    const [caseIndex, setCaseIndex] = useState(0);
 
     // Preload sounds when switch changes
     useEffect(() => {
@@ -54,11 +54,14 @@ function KeySimulator() {
         }
     }, [switchValue]);
 
-    const handleSwitchChange = (e) => {
-        setSwitchValue(e.target.value)
-        switchselect.current.blur();
-        keycontainer.current.focus();
-        toast.show(`Switch sound changed to ${keySounds[e.target.value].caption} ✔️`, {
+    const handleSwitchChange = (val) => {
+        setSwitchValue(val)
+        // keycontainer.current.focus(); // Optional: keep focus logic if needed, but usually clicking a button focuses it. 
+        // With simplified handlers we might want to refocus keycontainer to keep typing active?
+        // Let's keep it safe.
+        if (keycontainer.current) keycontainer.current.focus();
+
+        toast.show(`Switch sound changed to ${keySounds[val].caption} ✔️`, {
             timeout: 3000,
             pause: false,
             delay: 0,
@@ -67,16 +70,16 @@ function KeySimulator() {
         });
     }
 
-    const handleLayoutChange = (e) => {
-        dispatch(parseKLE(keyPresets[e.target.value].kle));
-        layoutselect.current.blur();
-        keycontainer.current.focus();
+    const handleLayoutChange = (val) => {
+        setLayoutIndex(val);
+        dispatch(parseKLE(keyPresets[val].kle));
+        if (keycontainer.current) keycontainer.current.focus();
     }
 
-    const handleCaseChange = (e) => {
-        dispatch(setKeyboardColor(keyboardColors[e.target.value].background))
-        caseselect.current.blur();
-        keycontainer.current.focus();
+    const handleCaseChange = (val) => {
+        setCaseIndex(val);
+        dispatch(setKeyboardColor(keyboardColors[val].background))
+        if (keycontainer.current) keycontainer.current.focus();
     }
 
     const toggleMute = () => {
@@ -178,10 +181,8 @@ function KeySimulator() {
     }
 
     // Tailwind classes for theme
-    const bgClass = currentTheme === 'dark' ? 'bg-[#212121]' : 'bg-white';
     const textClass = currentTheme === 'dark' ? 'text-white' : 'text-black';
     const borderClass = currentTheme === 'dark' ? 'border-[#323232]' : 'border-[#eeeeee]';
-    const dropdownClass = `px-2 py-1 rounded border ${borderClass} ${bgClass} ${textClass} font-['Bai_Jamjuree'] text-sm cursor-pointer focus:outline-none`;
 
     return (
         <div
@@ -198,55 +199,6 @@ function KeySimulator() {
                 }>
                     <TypingTest />
                 </Suspense>
-
-                {/* Controls */}
-                <div className={`flex flex-wrap gap-2 items-center justify-center py-3 px-4 border rounded my-4 ${borderClass}`}>
-                    <select
-                        className={dropdownClass}
-                        ref={switchselect}
-                        aria-label="Switch Type"
-                        onChange={handleSwitchChange}
-                        defaultValue="0"
-                    >
-                        {keySounds.map((sound, index) => (
-                            <option value={index} key={sound.key}>{sound.caption}</option>
-                        ))}
-                    </select>
-
-                    <select
-                        className={dropdownClass}
-                        ref={layoutselect}
-                        aria-label="Keyboard Layout"
-                        onChange={handleLayoutChange}
-                        defaultValue="0"
-                    >
-                        {keyPresets.map((preset, index) => (
-                            <option value={index} key={preset.key}>{preset.caption}</option>
-                        ))}
-                    </select>
-
-                    <select
-                        className={dropdownClass}
-                        ref={caseselect}
-                        aria-label="Case Color"
-                        onChange={handleCaseChange}
-                        defaultValue="0"
-                    >
-                        {keyboardColors.map((color, index) => (
-                            <option value={index} key={color.color}>{color.caption}</option>
-                        ))}
-                    </select>
-
-                    <label className={`flex items-center gap-2 px-2 ${textClass} font-['Bai_Jamjuree'] text-sm cursor-pointer`}>
-                        <input
-                            type="checkbox"
-                            onChange={toggleMute}
-                            aria-label="Mute Sound"
-                            className="w-4 h-4 cursor-pointer"
-                        />
-                        Mute
-                    </label>
-                </div>
 
                 {/* Keyboard */}
                 <div
@@ -276,6 +228,81 @@ function KeySimulator() {
                         </div>
                     ))}
                 </div>
+
+                {/* Controls */}
+                <div className={`grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-5xl py-6 px-4 border rounded my-4 ${borderClass}`}>
+
+                    {/* Switch Type Column */}
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                            <span className={`text-sm font-medium ${currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                                Switch Type
+                            </span>
+                            <button
+                                onClick={toggleMute}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium text-xs transition-colors ${muted
+                                    ? (currentTheme === 'dark'
+                                        ? 'bg-red-600 text-white hover:bg-red-500'
+                                        : 'bg-red-500 text-white hover:bg-red-600')
+                                    : (currentTheme === 'dark'
+                                        ? 'bg-zinc-800 text-white hover:bg-zinc-700'
+                                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200')
+                                    }`}
+                            >
+                                {muted ? (
+                                    <SpeakerXMarkIcon className="w-4 h-4" />
+                                ) : (
+                                    <SpeakerWaveIcon className="w-4 h-4" />
+                                )}
+                                {muted ? 'Muted' : 'Sound On'}
+                            </button>
+                        </div>
+                        <div className={`flex flex-wrap gap-2 ${muted ? 'opacity-50 pointer-events-none' : ''}`}>
+                            {keySounds.map((sound, index) => {
+                                const isActive = String(switchValue) === String(index);
+                                return (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleSwitchChange(index)}
+                                        disabled={muted}
+                                        className={`
+                                            px-3 py-1.5 text-sm font-medium rounded-md transition-colors
+                                            ${isActive
+                                                ? (currentTheme === 'dark'
+                                                    ? 'bg-white text-black shadow-sm'
+                                                    : 'bg-black text-white shadow-sm')
+                                                : (currentTheme === 'dark'
+                                                    ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                                                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-black')
+                                            }
+                                        `}
+                                    >
+                                        {sound.caption}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Keyboard Layout Column */}
+                    <ToggleGroup
+                        label="Keyboard Layout"
+                        options={keyPresets}
+                        value={layoutIndex}
+                        onChange={handleLayoutChange}
+                        currentTheme={currentTheme}
+                    />
+
+                    {/* Case Color Column */}
+                    <ToggleGroup
+                        label="Case Color"
+                        options={keyboardColors}
+                        value={caseIndex}
+                        onChange={handleCaseChange}
+                        currentTheme={currentTheme}
+                    />
+
+                </div>
                 <ToastContainer />
             </div>
         </div>
@@ -283,3 +310,37 @@ function KeySimulator() {
 }
 
 export default KeySimulator;
+
+function ToggleGroup({ label, options, value, onChange, currentTheme }) {
+    return (
+        <div className="flex flex-col gap-3">
+            <span className={`text-sm font-medium ${currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                {label}
+            </span>
+            <div className="flex flex-wrap gap-2">
+                {options.map((option, index) => {
+                    const isActive = String(value) === String(index);
+                    return (
+                        <button
+                            key={index}
+                            onClick={() => onChange(index)}
+                            className={`
+                               px-3 py-1.5 text-sm font-medium rounded-md transition-colors
+                               ${isActive
+                                    ? (currentTheme === 'dark'
+                                        ? 'bg-white text-black shadow-sm'
+                                        : 'bg-black text-white shadow-sm')
+                                    : (currentTheme === 'dark'
+                                        ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-black')
+                                }
+                           `}
+                        >
+                            {option.caption}
+                        </button>
+                    )
+                })}
+            </div>
+        </div>
+    )
+}
