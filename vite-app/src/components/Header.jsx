@@ -18,8 +18,8 @@ function Header() {
             <div className="flex w-full max-w-[1048px] justify-between items-center mx-2.5 my-2.5">
                 {/* Logo */}
                 <div className="flex items-center gap-2 px-6 text-2xl font-medium font-['Bai_Jamjuree']">
-                    <img src={logoSvg} className="align-text-top" alt="kbsim logo" height="32" width="32" />
-                    kbsim
+                    <img src={logoSvg} className="align-text-top" alt="Phímhub logo" height="32" width="32" />
+                    Phímhub
                 </div>
 
                 {/* Controls */}

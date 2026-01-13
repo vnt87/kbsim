@@ -1,5 +1,5 @@
-# [PhímHub](https://phimhub.pages.dev) - App giả lập phím cơ
-![kbs.im picture](public/kbsim(2026-01-13%2014.02.33).jpg)
+# [Phímhub](https://phimhub.pages.dev) - Mechanical Keyboard Simulator
+![Phímhub picture](public/kbsim(2026-01-13%2014.02.33).jpg)
 
 Mechanical Keyboard Simulator is website that simulates typing on a variety of custom keyswitches and offers a simple typing test. Currently, it supports 10+ switches, keyboard layouts, and colors for an customizable, satisfying typing experience.
 
