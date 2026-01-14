@@ -6,10 +6,10 @@ import { Plus } from 'lucide-react';
  */
 function CornerMarkers({ accentColor }) {
     const positions = [
-        { className: 'top-0 -left-3' },
-        { className: 'top-0 -right-3' },
-        { className: 'bottom-0 -left-3' },
-        { className: 'bottom-0 -right-3' },
+        { className: '-top-2.5 -left-2.5' },
+        { className: '-top-2.5 -right-2.5' },
+        { className: '-bottom-2.5 -left-2.5' },
+        { className: '-bottom-2.5 -right-2.5' },
     ];
 
     return (
