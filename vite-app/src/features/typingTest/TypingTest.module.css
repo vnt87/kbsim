@@ -1,10 +1,9 @@
 .typingcontainer {
   display: inline-block;
   text-align: left;
-  border: 3px solid;
   width: 832px;
   max-width: 80vw;
-  transition: background 0.2s linear, border-color 0.2s linear;
+  transition: background 0.2s linear;
 }
 
 .wordcontainer {
