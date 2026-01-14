@@ -23,7 +23,7 @@ function App() {
         return (
           <Particles
             className="fixed inset-0 z-0"
-            quantity={50}
+            quantity={150}
             staticity={80}
             ease={80}
             size={0.5}
@@ -39,7 +39,12 @@ function App() {
       case BACKGROUND_EFFECTS.PATHS:
         return <FloatingPaths className="fixed inset-0 z-0" />
       case BACKGROUND_EFFECTS.WAVES:
-        return <WaveBackground className="fixed inset-0 z-0" />
+        return (
+          <WaveBackground
+            className="fixed inset-0 z-0"
+            strokeColor={currentTheme === 'dark' ? '#ffffff' : '#333333'}
+          />
+        )
       case BACKGROUND_EFFECTS.MATRIX:
         return <MatrixRain className="fixed inset-0 z-0" />
       case BACKGROUND_EFFECTS.SHADER_LINES:

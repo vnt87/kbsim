@@ -5,7 +5,7 @@ import typingTestReducer from '../typingTest/typingTestSlice';
 
 const themeMiddleware = (store) => (next) => (action) => {
   const result = next(action);
-  if ( action.type?.startsWith('themeProvider/') ) {
+  if (action.type?.startsWith('themeProvider/')) {
     const theme = (({ themeProvider }) => ({ themeProvider }))(store.getState());
     localStorage.setItem('theme', JSON.stringify(theme))
   }
@@ -14,7 +14,12 @@ const themeMiddleware = (store) => (next) => (action) => {
 
 const themeRehydrate = () => {
   if (localStorage.getItem('theme') !== null) {
-    return JSON.parse(localStorage.getItem('theme')); // re-hydrate the store
+    try {
+      return JSON.parse(localStorage.getItem('theme')); // re-hydrate the store
+    } catch (e) {
+      console.warn("Failed to rehydrate theme from localStorage:", e);
+      localStorage.removeItem('theme');
+    }
   }
 };
 
