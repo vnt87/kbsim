@@ -20,6 +20,7 @@ import { keyCodeOf } from '../../lib/keyboard/parseModules.js'
 import { ToastContainer, toast } from '../../components/toast/toast.js';
 import Key from '../key/Key.jsx';
 import store from '../store/store';
+import { SecureFrame } from '../../components/ui/SecureFrame.jsx';
 
 const TypingTest = React.lazy(() => import('../typingTest/TypingTest.jsx'));
 
@@ -192,145 +193,158 @@ function KeySimulator() {
             ref={keycontainer}
             tabIndex="0"
         >
-            <div className="flex flex-col items-center">
-                {/* Typing Test */}
-                <Suspense fallback={
-                    <div className={`w-full h-24 border rounded ${borderClass}`} />
-                }>
-                    <TypingTest />
-                </Suspense>
+            {/* Wrap everything in SecureFrame */}
+            <SecureFrame
+                accentColor={currentTheme === 'dark' ? '#4ade80' : '#22c55e'}
+                className="p-4"
+            >
+                <div className="flex flex-col items-center">
+                    {/* Typing Test */}
+                    <Suspense fallback={
+                        <div className={`w-full h-24 border rounded ${borderClass}`} />
+                    }>
+                        <TypingTest />
+                    </Suspense>
 
-                {/* Keyboard */}
-                <div
-                    className="relative rounded-lg"
-                    style={keyboardStyle}
-                >
-                    {layout.map((row, index) => (
-                        <div className="flex" key={index}>
-                            {row.map((key) => (
-                                <Key
-                                    key={key.keyid}
-                                    className={key.class}
-                                    legend={key.legend}
-                                    sublegend={key.sublegend}
-                                    width={key.width}
-                                    height={key.height}
-                                    x={key.x}
-                                    y={key.y}
-                                    keytopcolor={key.keytopcolor}
-                                    keybordercolor={key.keybordercolor}
-                                    textcolor={key.textcolor}
-                                    pressed={key.pressed}
-                                    mouseDown={handleKeyMouseDown}
-                                    mouseUp={handleKeyMouseUp}
-                                />
-                            ))}
-                        </div>
-                    ))}
-                </div>
-
-                {/* Controls */}
-                <div className={`grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-5xl py-6 px-4 border rounded my-4 ${borderClass}`}>
-
-                    {/* Switch Type Column */}
-                    <div className="flex flex-col gap-3">
-                        <div className="flex items-center justify-between">
-                            <span className={`text-sm font-medium ${currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                                Switch Type
-                            </span>
-                            <button
-                                onClick={toggleMute}
-                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium text-xs transition-colors ${muted
-                                    ? (currentTheme === 'dark'
-                                        ? 'bg-red-600 text-white hover:bg-red-500'
-                                        : 'bg-red-500 text-white hover:bg-red-600')
-                                    : (currentTheme === 'dark'
-                                        ? 'bg-zinc-800 text-white hover:bg-zinc-700'
-                                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200')
-                                    }`}
-                            >
-                                {muted ? (
-                                    <SpeakerXMarkIcon className="w-4 h-4" />
-                                ) : (
-                                    <SpeakerWaveIcon className="w-4 h-4" />
-                                )}
-                                {muted ? 'Muted' : 'Sound On'}
-                            </button>
-                        </div>
-                        <div className={`flex flex-wrap gap-2 ${muted ? 'opacity-50 pointer-events-none' : ''}`}>
-                            {keySounds.map((sound, index) => {
-                                const isActive = String(switchValue) === String(index);
-                                return (
-                                    <button
-                                        key={index}
-                                        onClick={() => handleSwitchChange(index)}
-                                        disabled={muted}
-                                        className={`
-                                            px-3 py-1.5 text-sm font-medium rounded-md transition-colors
-                                            ${isActive
-                                                ? (currentTheme === 'dark'
-                                                    ? 'bg-white text-black shadow-sm'
-                                                    : 'bg-black text-white shadow-sm')
-                                                : (currentTheme === 'dark'
-                                                    ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
-                                                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-black')
-                                            }
-                                        `}
-                                    >
-                                        {sound.caption}
-                                    </button>
-                                )
-                            })}
-                        </div>
+                    {/* Keyboard */}
+                    <div
+                        className="relative rounded-lg"
+                        style={keyboardStyle}
+                    >
+                        {layout.map((row, index) => (
+                            <div className="flex" key={index}>
+                                {row.map((key) => (
+                                    <Key
+                                        key={key.keyid}
+                                        className={key.class}
+                                        legend={key.legend}
+                                        sublegend={key.sublegend}
+                                        width={key.width}
+                                        height={key.height}
+                                        x={key.x}
+                                        y={key.y}
+                                        keytopcolor={key.keytopcolor}
+                                        keybordercolor={key.keybordercolor}
+                                        textcolor={key.textcolor}
+                                        pressed={key.pressed}
+                                        mouseDown={handleKeyMouseDown}
+                                        mouseUp={handleKeyMouseUp}
+                                    />
+                                ))}
+                            </div>
+                        ))}
                     </div>
 
-                    {/* Keyboard Layout Column */}
-                    <ToggleGroup
-                        label="Keyboard Layout"
-                        options={keyPresets}
-                        value={layoutIndex}
-                        onChange={handleLayoutChange}
-                        currentTheme={currentTheme}
-                    />
+                    {/* Controls with liquid glass effect */}
+                    <div className={`
+                    grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-5xl py-6 px-4 rounded my-4
+                    backdrop-blur-md border
+                    ${currentTheme === 'dark'
+                            ? 'bg-white/5 border-white/10'
+                            : 'bg-black/5 border-black/10'
+                        }
+                `}>
 
-                    {/* Case Color Column */}
-                    <div className="flex flex-col gap-3">
-                        <span className={`text-sm font-medium ${currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                            Case Color
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                            {keyboardColors.map((color, index) => {
-                                const isActive = caseIndex === index;
-                                // Simplified contrast check: "black" and "gray" (if dark enough) might need white text
-                                const isDark = color.color === 'black';
+                        {/* Switch Type Column */}
+                        <div className="flex flex-col gap-3">
+                            <div className="flex items-center justify-between">
+                                <span className={`text-sm font-medium ${currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                                    Switch Type
+                                </span>
+                                <button
+                                    onClick={toggleMute}
+                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium text-xs transition-colors ${muted
+                                        ? (currentTheme === 'dark'
+                                            ? 'bg-red-600 text-white hover:bg-red-500'
+                                            : 'bg-red-500 text-white hover:bg-red-600')
+                                        : (currentTheme === 'dark'
+                                            ? 'bg-zinc-800 text-white hover:bg-zinc-700'
+                                            : 'bg-gray-100 text-gray-900 hover:bg-gray-200')
+                                        }`}
+                                >
+                                    {muted ? (
+                                        <SpeakerXMarkIcon className="w-4 h-4" />
+                                    ) : (
+                                        <SpeakerWaveIcon className="w-4 h-4" />
+                                    )}
+                                    {muted ? 'Muted' : 'Sound On'}
+                                </button>
+                            </div>
+                            <div className={`flex flex-wrap gap-2 ${muted ? 'opacity-50 pointer-events-none' : ''}`}>
+                                {keySounds.map((sound, index) => {
+                                    const isActive = String(switchValue) === String(index);
+                                    return (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleSwitchChange(index)}
+                                            disabled={muted}
+                                            className={`
+                                            px-3 py-1.5 text-sm font-medium rounded-md transition-colors
+                                            ${isActive
+                                                    ? (currentTheme === 'dark'
+                                                        ? 'bg-white text-black shadow-sm'
+                                                        : 'bg-black text-white shadow-sm')
+                                                    : (currentTheme === 'dark'
+                                                        ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                                                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-black')
+                                                }
+                                        `}
+                                        >
+                                            {sound.caption}
+                                        </button>
+                                    )
+                                })}
+                            </div>
+                        </div>
 
-                                return (
-                                    <button
-                                        key={index}
-                                        onClick={() => handleCaseChange(index)}
-                                        className={`
+                        {/* Keyboard Layout Column */}
+                        <ToggleGroup
+                            label="Keyboard Layout"
+                            options={keyPresets}
+                            value={layoutIndex}
+                            onChange={handleLayoutChange}
+                            currentTheme={currentTheme}
+                        />
+
+                        {/* Case Color Column */}
+                        <div className="flex flex-col gap-3">
+                            <span className={`text-sm font-medium ${currentTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                                Case Color
+                            </span>
+                            <div className="flex flex-wrap gap-2">
+                                {keyboardColors.map((color, index) => {
+                                    const isActive = caseIndex === index;
+                                    // Simplified contrast check: "black" and "gray" (if dark enough) might need white text
+                                    const isDark = color.color === 'black';
+
+                                    return (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleCaseChange(index)}
+                                            className={`
                                             px-3 py-1.5 text-xs font-bold uppercase tracking-wide rounded-md transition-all shadow-sm
                                             border ${currentTheme === 'dark' ? 'border-white/10' : 'border-black/10'}
                                             ${isActive
-                                                ? (currentTheme === 'dark' ? 'ring-2 ring-white ring-offset-2 ring-offset-[#212121]' : 'ring-2 ring-black ring-offset-2 ring-offset-white')
-                                                : 'hover:scale-105 active:scale-95'}
+                                                    ? (currentTheme === 'dark' ? 'ring-2 ring-white ring-offset-2 ring-offset-[#212121]' : 'ring-2 ring-black ring-offset-2 ring-offset-white')
+                                                    : 'hover:scale-105 active:scale-95'}
                                         `}
-                                        style={{
-                                            background: color.background,
-                                            color: isDark ? 'white' : 'black',
-                                            textShadow: !isDark ? '0 0 2px rgba(255,255,255,0.5)' : 'none'
-                                        }}
-                                    >
-                                        {color.caption}
-                                    </button>
-                                )
-                            })}
+                                            style={{
+                                                background: color.background,
+                                                color: isDark ? 'white' : 'black',
+                                                textShadow: !isDark ? '0 0 2px rgba(255,255,255,0.5)' : 'none'
+                                            }}
+                                        >
+                                            {color.caption}
+                                        </button>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
+                    <ToastContainer />
                 </div>
-                <ToastContainer />
-            </div>
+            </SecureFrame>
         </div>
     );
 }

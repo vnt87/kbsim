@@ -42,7 +42,7 @@ function TypingTest({ currentTheme, theme }) {
   const [inputVal, setInputVal] = useState("");
 
   const [ticker, setTicker] = useState(null);
-  
+
   let wordObject = words.map((word, index) => {
     return (
       <Word
@@ -155,52 +155,52 @@ function TypingTest({ currentTheme, theme }) {
   }
 
   return (
-    <div 
+    <div
       className={styles.typingcontainer}
       style={{
-        backgroundColor: theme.background,
-        borderColor: theme.boxBorder        
+        backgroundColor: 'transparent',
+        borderColor: theme.boxBorder
       }}
     >
       <div>
-        <div 
+        <div
           className={styles.wordcontainer}
         >
           {!finished
             ? <div className={styles.wordarea}>
-                <div className={styles.words}>
-                  {wordObject}
-                </div>
+              <div className={styles.words}>
+                {wordObject}
               </div>
+            </div>
             : <div
-                className={styles.resultarea}
-                style={{
-                  color: theme.text
-                }}
-              >
-                <div className={styles.results}>
-                  <div className={styles.resultcol} aria-label="Words per minute">
-                    <div className={styles.wpm}>
-                      {stats.wpm} WPM
-                    </div>
+              className={styles.resultarea}
+              style={{
+                color: theme.text
+              }}
+            >
+              <div className={styles.results}>
+                <div className={styles.resultcol} aria-label="Words per minute">
+                  <div className={styles.wpm}>
+                    {stats.wpm} WPM
                   </div>
-                  <div className={styles.resultcol}>
-                    <div className={styles.accuracy}>
-                      {`${stats.accuracy}% accuracy`}
-                    </div>
+                </div>
+                <div className={styles.resultcol}>
+                  <div className={styles.accuracy}>
+                    {`${stats.accuracy}% accuracy`}
                   </div>
-                  <div className={styles.resultcol}>
-                    <div className={styles.keystrokes}>
-                      <span className={styles.correctresult}>{stats.keystrokes.correct}</span> | <span className={styles.incorrectresult}>{stats.keystrokes.incorrect}</span> keystrokes
-                    </div>
+                </div>
+                <div className={styles.resultcol}>
+                  <div className={styles.keystrokes}>
+                    <span className={styles.correctresult}>{stats.keystrokes.correct}</span> | <span className={styles.incorrectresult}>{stats.keystrokes.incorrect}</span> keystrokes
                   </div>
-                  <div className={styles.resultcol}>
-                    <div className={styles.wordresult}>
-                      <span className={styles.correctresult}>{stats.words.correct}</span> | <span className={styles.incorrectresult}>{stats.words.incorrect}</span> words
-                    </div>
+                </div>
+                <div className={styles.resultcol}>
+                  <div className={styles.wordresult}>
+                    <span className={styles.correctresult}>{stats.words.correct}</span> | <span className={styles.incorrectresult}>{stats.words.incorrect}</span> words
                   </div>
                 </div>
               </div>
+            </div>
           }
 
         </div>
@@ -222,7 +222,7 @@ function TypingTest({ currentTheme, theme }) {
             ref={inputRef}
           />
           <span className={styles.toolbar}>
-            <span 
+            <span
               className={styles.time}
               style={{
                 backgroundColor: theme.timer,
@@ -231,8 +231,8 @@ function TypingTest({ currentTheme, theme }) {
             >
               {parseMinute(timeLeft)}:{parseSecond(timeLeft)}
             </span>
-            <button 
-              className={`${styles.redo} ${currentTheme == "light" ? styles.light : styles.dark}`} 
+            <button
+              className={`${styles.redo} ${currentTheme == "light" ? styles.light : styles.dark}`}
               onClick={() => redo()}
               style={{
                 backgroundColor: theme.background,
@@ -250,8 +250,8 @@ function TypingTest({ currentTheme, theme }) {
 
 const mapStateToProps = (state) => {
   return {
-      currentTheme: state.themeProvider.current,
-      theme: state.themeProvider.theme
+    currentTheme: state.themeProvider.current,
+    theme: state.themeProvider.theme
   }
 }
 

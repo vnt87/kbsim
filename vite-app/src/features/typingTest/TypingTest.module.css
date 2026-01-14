@@ -2,7 +2,6 @@
   display: inline-block;
   text-align: left;
   border: 3px solid;
-  margin-bottom: 24px;
   width: 832px;
   max-width: 80vw;
   transition: background 0.2s linear, border-color 0.2s linear;
