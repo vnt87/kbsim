@@ -240,7 +240,11 @@ function KeySimulator() {
                         accentColor={currentTheme === 'dark' ? '#4ade80' : '#22c55e'}
                         className="w-full max-w-5xl my-4"
                     >
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 px-4">
+                        <div className={`
+                        grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 px-4
+                        backdrop-blur-sd
+                        ${currentTheme === 'dark' ? 'bg-white/1' : 'bg-black/1'}
+                    `}>
 
                             {/* Switch Type Column */}
                             <div className="flex flex-col gap-3">
